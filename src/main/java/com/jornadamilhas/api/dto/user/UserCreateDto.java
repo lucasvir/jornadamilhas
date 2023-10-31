@@ -12,6 +12,9 @@ public record UserCreateDto(
         String email,
 
         @NotBlank
+        String imgUrl,
+
+        @NotBlank
         String password
 ) {
 }

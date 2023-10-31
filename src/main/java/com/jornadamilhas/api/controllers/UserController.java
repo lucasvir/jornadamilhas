@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -53,6 +52,17 @@ public class UserController {
             return ResponseEntity.ok(new UserShowDto(user));
         } catch (EntityNotFoundException e) {
             System.out.println("Usuário não encontrado. Id -> " + id);
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("{id}/delete")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        try {
+            service.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (NotValidException e) {
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }

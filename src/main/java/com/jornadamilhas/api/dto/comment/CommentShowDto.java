@@ -8,15 +8,15 @@ import java.time.format.DateTimeFormatter;
 public record CommentShowDto(
         Long id,
         String text,
-        LocalDateTime date,
-        Long user_id
+        String user_name,
+        String user_imgUrl
 ) {
     public CommentShowDto(Comment comment) {
         this(
                 comment.getId(),
                 comment.getText(),
-                comment.getDate(),
-                comment.getUser().getId()
+                comment.getUser().getName(),
+                comment.getUser().getImgUrl()
         );
     }
 }

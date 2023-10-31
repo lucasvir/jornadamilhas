@@ -17,6 +17,7 @@ public class User implements Serializable {
 
     private String name;
     private String email;
+    private String imgUrl;
     private String password;
     private String old_password;
 
@@ -27,10 +28,11 @@ public class User implements Serializable {
 
     }
 
-    public User(Long id, String name, String email, String password, String old_password, List<Comment> comments) {
+    public User(Long id, String name, String email, String imgUrl, String password, String old_password, List<Comment> comments) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.imgUrl = imgUrl;
         this.password = password;
         this.old_password = old_password;
         this.comments = comments;
@@ -39,6 +41,7 @@ public class User implements Serializable {
     public User(UserCreateDto dto) {
         this.name = dto.name();
         this.email = dto.email();
+        this.imgUrl = dto.imgUrl();
         this.password = dto.password();
         this.old_password = dto.password();
     }
@@ -67,6 +70,10 @@ public class User implements Serializable {
         return comments;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,10 +89,11 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "{" +
+        return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
                 ", password='" + password + '\'' +
                 ", old_password='" + old_password + '\'' +
                 ", comments=" + comments +

@@ -1,7 +1,9 @@
 package com.jornadamilhas.api.models;
 
 import com.jornadamilhas.api.dto.comment.CommentCreateDto;
+import com.jornadamilhas.api.dto.comment.CommentUpdateDto;
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -76,5 +78,10 @@ public class Comment implements Serializable {
                 ", date=" + date +
                 ", user=" + user +
                 '}';
+    }
+
+    public void updateData(CommentUpdateDto dto) {
+        this.text = dto.text();
+        this.date = LocalDateTime.now();
     }
 }
