@@ -6,6 +6,7 @@ import com.jornadamilhas.api.dto.destiny.DestinyUpdateDto;
 import com.jornadamilhas.api.models.Destiny;
 import com.jornadamilhas.api.services.DestinyService;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.hibernate.query.NativeQuery;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.InputMismatchException;
 import java.util.List;
 
 @RestController
@@ -51,7 +53,7 @@ public class DestinyController {
             return ResponseEntity.ok(service.show(id));
         } catch (NotValidException e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -63,6 +65,11 @@ public class DestinyController {
             return ResponseEntity.ok(destiny);
         } catch (NotValidException e) {
             System.out.println(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (EntityNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (InputMismatchException e) {
             return ResponseEntity.badRequest().build();
         }
     }

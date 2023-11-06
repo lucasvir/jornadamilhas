@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface DestinyRepository extends JpaRepository<Destiny, Long> {
     List<Destiny> findByNameContainsIgnoreCase(String name);
-    List<Destiny> findByNameIgnoreCase(String name);
     boolean existsByNameIgnoreCase(String name);
 }

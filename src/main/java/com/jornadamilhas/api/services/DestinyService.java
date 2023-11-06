@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.List;
 
 @Service
@@ -63,11 +65,16 @@ public class DestinyService {
 
     public DestinyShowDto update(Long id, DestinyUpdateDto dto) {
         Destiny destiny = repository.findById(id)
-                .orElseThrow(() -> new NotValidException("Destino não encontrado com este id. Id -> " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Destino não encontrado com este id. Id -> " + id));
 
         boolean existsByName = repository.existsByNameIgnoreCase(dto.name());
         if (existsByName) {
             throw new NotValidException("Destino já registrado com esse nome. Nome -> " + dto.name());
+        }
+
+        var dtoIsEmpty = dto.name().isEmpty() && dto.imgUrl().isEmpty() && dto.price().isEmpty();
+        if(dtoIsEmpty) {
+            throw new InputMismatchException("Nenhum campo foi preenchido para fazer a atualização.");
         }
 
         destiny.updateData(dto);
