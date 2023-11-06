@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -39,9 +40,8 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> index() {
-        List<User> users = service.index();
-
+    public ResponseEntity<List<UserShowDto>> index() {
+        List<UserShowDto> users = service.index();
         return ResponseEntity.ok(users);
     }
 
@@ -50,7 +50,7 @@ public class UserController {
         try {
             User user = service.show(id);
             return ResponseEntity.ok(new UserShowDto(user));
-        } catch (EntityNotFoundException e) {
+        } catch (NotValidException e) {
             System.out.println("Usuário não encontrado. Id -> " + id);
             return ResponseEntity.badRequest().build();
         }
