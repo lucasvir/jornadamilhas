@@ -1,5 +1,6 @@
 package com.jornadamilhas.api.services;
 
+import com.jornadamilhas.api.ChatGPTApi;
 import com.jornadamilhas.api.dto.destiny.DestinyCreateDto;
 import com.jornadamilhas.api.dto.destiny.DestinyShowDto;
 import com.jornadamilhas.api.dto.destiny.DestinyUpdateDto;
@@ -29,6 +30,16 @@ public class DestinyService {
         }
 
         Destiny destiny = new Destiny(dto);
+
+        if (dto.description() == null || dto.description().isEmpty()) {
+            String prompt = "Faça um resumo sobre " + dto.name() + " enfatizando o porque este lugar é incrível. "
+                    + "Crie 1 parágrafos utilizando uma linguagem informal de até 250 caracteres.";
+
+            String chatGptDescription = ChatGPTApi.chatGPT(prompt);
+            System.out.println(chatGptDescription);
+            destiny.setDescription(chatGptDescription);
+        }
+
         repository.save(destiny);
 
         return new DestinyShowDto(destiny);
@@ -72,8 +83,8 @@ public class DestinyService {
             throw new NotValidException("Destino já registrado com esse nome. Nome -> " + dto.name());
         }
 
-        var dtoIsEmpty = dto.name().isEmpty() && dto.imgUrl().isEmpty() && dto.price().isEmpty();
-        if(dtoIsEmpty) {
+        var dtoIsEmpty = dto.name().isEmpty() && dto.imgs().isEmpty() && dto.price().isEmpty();
+        if (dtoIsEmpty) {
             throw new InputMismatchException("Nenhum campo foi preenchido para fazer a atualização.");
         }
 

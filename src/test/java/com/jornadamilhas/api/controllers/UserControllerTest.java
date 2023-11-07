@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -147,6 +148,7 @@ class UserControllerTest {
         Assertions.assertEquals(400, response.getStatus());
     }
 
+    // SHOW
     @Test
     @DisplayName("Deve retornar código 204 para solicitação de deletar um usuario específico por id válido")
     void return200DeleteUserByValidId() throws Exception {
@@ -159,15 +161,15 @@ class UserControllerTest {
         Assertions.assertEquals(204, response.getStatus());
     }
 
-//    @Test
-//    @DisplayName("Deve retornar código 400 para solicitação de deletar um usuario específico por id não válido")
-//    void return400DeleteUserByNotValidId() throws Exception {
-//
-//       BDDMockito.
-//
-//        var response = mvc.perform(delete("/users/1/delete"))
-//                .andReturn().getResponse();
-//
-//        Assertions.assertEquals(400, response.getStatus());
-//    }
+    @Test
+    @DisplayName("Deve retornar código 404 para solicitação de deletar um usuario específico por id não válido")
+    void return404DeleteUserByNotValidId() throws Exception {
+
+       doThrow(NotValidException.class).when(userService).delete(1l);
+
+        var response = mvc.perform(delete("/users/1/delete"))
+                .andReturn().getResponse();
+
+        Assertions.assertEquals(404, response.getStatus());
+    }
 }

@@ -21,8 +21,7 @@ public class CommentController {
 
     @Autowired
     private CommentService service;
-
-
+    
     @PostMapping("{id}/create")
     @Transactional
     public ResponseEntity<CommentShowDto> create(@PathVariable Long id, @RequestBody @Valid CommentCreateDto dto) {
@@ -71,7 +70,7 @@ public class CommentController {
             return ResponseEntity.noContent().build();
         } catch (NotValidException e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
     }
 

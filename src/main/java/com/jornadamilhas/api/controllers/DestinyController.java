@@ -81,7 +81,7 @@ public class DestinyController {
             return ResponseEntity.noContent().build();
         } catch (NotValidException e) {
             System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
     }
 

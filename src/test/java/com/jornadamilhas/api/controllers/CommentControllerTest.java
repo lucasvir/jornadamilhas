@@ -24,6 +24,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -219,16 +220,18 @@ class CommentControllerTest {
         Assertions.assertEquals(204, response.getStatus());
     }
 
-//    @Test
-//    @DisplayName("Deve retornar código 400 para solicitação de deletar comentário por id (não válido)")
-//    void return400CommentDeleteNotValidId() throws Exception {
-//
-//        var response = mvc.perform(
-//                delete("/depoimentos/1/delete")
-//        ).andReturn().getResponse();
-//
-//        Assertions.assertEquals(204, response.getStatus());
-//    }
+    @Test
+    @DisplayName("Deve retornar código 404 para solicitação de deletar comentário por id (não válido)")
+    void return404CommentDeleteNotValidId() throws Exception {
+
+        doThrow(NotValidException.class).when(service).delete(1l);
+
+        var response = mvc.perform(
+                delete("/depoimentos/1/delete")
+        ).andReturn().getResponse();
+
+        Assertions.assertEquals(404, response.getStatus());
+    }
 
 
     //RANDOM COMMENTS

@@ -1,6 +1,7 @@
 package com.jornadamilhas.api.dto.destiny;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
@@ -9,9 +10,21 @@ public record DestinyCreateDto(
         String name,
 
         @NotBlank
-        String imgUrl,
+        String imgs,
 
         @NotBlank
-        String price
+        String price,
+
+        @NotBlank
+        @Size(min = 1, max = 160)
+        String meta,
+
+        @Size(max = 450)
+        String description
+
 ) {
+
+        public DestinyCreateDto(String name, String imgs, String meta) {
+                this(name, imgs, imgs, meta, null);
+        }
 }

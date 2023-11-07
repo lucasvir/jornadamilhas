@@ -3,7 +3,9 @@ package com.jornadamilhas.api.dto.destiny;
 public record DestinyUpdateDto(
 
         String name,
-        String imgUrl,
-        String price
+        String imgs,
+        String price,
+        String meta,
+        String description
 ) {
 }
