@@ -110,6 +110,5 @@ public class DestinyService {
         } else {
             throw new NotValidException("Nome para busca não foi informado.");
         }
-
     }
 }
