@@ -58,9 +58,7 @@ public class DestinyService {
     }
 
     public DestinyShowDto show(Long id) {
-        Destiny destiny = repository.findById(id)
-                .orElseThrow(() -> new NotValidException("Destino não encontrado com este id. Id -> " + id));
-
+        Destiny destiny = repository.getReferenceById(id);
         return new DestinyShowDto(destiny);
     }
 
@@ -75,17 +73,16 @@ public class DestinyService {
     }
 
     public DestinyShowDto update(Long id, DestinyUpdateDto dto) {
-        Destiny destiny = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Destino não encontrado com este id. Id -> " + id));
+        Destiny destiny = repository.getReferenceById(id);
 
         boolean existsByName = repository.existsByNameIgnoreCase(dto.name());
         if (existsByName) {
             throw new NotValidException("Destino já registrado com esse nome. Nome -> " + dto.name());
         }
 
-        var dtoIsEmpty = dto.name().isEmpty() && dto.imgs().isEmpty() && dto.price().isEmpty();
+        var dtoIsEmpty = dto.name() == null && dto.imgs() == null && dto.price() == null && dto.meta() == null;
         if (dtoIsEmpty) {
-            throw new InputMismatchException("Nenhum campo foi preenchido para fazer a atualização.");
+            throw new NotValidException("Nenhum campo foi preenchido para fazer a atualização.");
         }
 
         destiny.updateData(dto);

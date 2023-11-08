@@ -30,14 +30,10 @@ public class DestinyController {
     @Transactional
     public ResponseEntity<DestinyShowDto> create(@RequestBody @Valid DestinyCreateDto dto) {
 
-        try {
-            DestinyShowDto destiny = service.create(dto);
-            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(destiny.id()).toUri();
-            return ResponseEntity.created(uri).body(destiny);
-        } catch (NotValidException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        DestinyShowDto destiny = service.create(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(destiny.id()).toUri();
+        return ResponseEntity.created(uri).body(destiny);
+
     }
 
     @GetMapping
@@ -49,50 +45,24 @@ public class DestinyController {
 
     @GetMapping("{id}")
     public ResponseEntity<DestinyShowDto> show(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(service.show(id));
-        } catch (NotValidException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(service.show(id));
     }
 
     @PutMapping("{id}")
     public ResponseEntity<DestinyShowDto> update(@PathVariable Long id, @RequestBody DestinyUpdateDto dto) {
-
-        try {
-            DestinyShowDto destiny = service.update(id, dto);
-            return ResponseEntity.ok(destiny);
-        } catch (NotValidException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
-        } catch (InputMismatchException e) {
-            return ResponseEntity.badRequest().build();
-        }
+        DestinyShowDto destiny = service.update(id, dto);
+        return ResponseEntity.ok(destiny);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        try {
-            service.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (NotValidException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("search")
     public ResponseEntity<List<DestinyShowDto>> search(@RequestParam("nome") String name) {
-        try {
-            List<DestinyShowDto> destinations = service.search(name);
-            return ResponseEntity.ok(destinations);
-        } catch (NotValidException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        List<DestinyShowDto> destinations = service.search(name);
+        return ResponseEntity.ok(destinations);
     }
 }
