@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -42,13 +43,14 @@ public class User implements UserDetails {
         this.comments = comments;
     }
 
-    public User(UserCreateDto dto, String passHashed) {
+    public User(UserCreateDto dto) {
         this.name = dto.name();
         this.email = dto.email();
         this.imgUrl = dto.imgUrl();
-        this.password = passHashed;
-        this.old_password = passHashed;
+        this.password = hashPass(dto.password());
+        this.old_password = password;
     }
+
 
     public Long getId() {
         return id;
@@ -132,5 +134,10 @@ public class User implements UserDetails {
                 ", old_password='" + old_password + '\'' +
                 ", comments=" + comments +
                 '}';
+    }
+
+    private String hashPass(String password) {
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        return bcrypt.encode(password);
     }
 }

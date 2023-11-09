@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +80,7 @@ public class DestinyService {
 
         var dtoIsEmpty = dto.name() == null && dto.imgs() == null && dto.price() == null && dto.meta() == null;
         if (dtoIsEmpty) {
-            throw new NotValidException("Nenhum campo foi preenchido para fazer a atualização.", HttpStatus.BAD_REQUEST);
+            throw new RuntimeException("Nenhum campo foi preenchido para fazer a atualização.");
         }
 
         destiny.updateData(dto);
@@ -92,7 +93,7 @@ public class DestinyService {
         if (!nome.equalsIgnoreCase("")) {
             List<Destiny> detinations = repository.findByNameContainsIgnoreCase(nome);
             if (detinations.isEmpty()) {
-                throw new NotValidException("Nenhum destino foi encontrado.", HttpStatus.NOT_FOUND);
+                throw new RuntimeException("Nenhum destino foi encontrado.");
             }
 
             List<DestinyShowDto> destinyShowDtos = new ArrayList<>();
@@ -102,7 +103,7 @@ public class DestinyService {
             return destinyShowDtos;
 
         } else {
-            throw new NotValidException("Nome para busca não foi informado.", HttpStatus.BAD_REQUEST);
+            throw new EntityNotFoundException("Nome para busca não foi informado.");
         }
     }
 }

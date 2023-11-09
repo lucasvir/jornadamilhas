@@ -23,6 +23,11 @@ public class ErrorHandler {
         return ResponseEntity.notFound().build();
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    private ResponseEntity<String> handle400(RuntimeException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<List<ValidationErrorDto>> handle400(MethodArgumentNotValidException e) {
         List<FieldError> erros = e.getFieldErrors();

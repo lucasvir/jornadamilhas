@@ -26,9 +26,7 @@ public class UserService {
     public User create(UserCreateDto dto) {
         validations.forEach(v -> v.validate(dto));
 
-        String hashedPass = hashPass(dto.password());
-
-        return userRepository.save(new User(dto, hashedPass));
+        return userRepository.save(new User(dto));
     }
 
 
@@ -54,8 +52,5 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    private String hashPass(String password) {
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        return bcrypt.encode(password);
-    }
+
 }

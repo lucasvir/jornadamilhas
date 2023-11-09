@@ -50,15 +50,13 @@ public class CommentService {
     }
 
     public CommentShowDto show(Long id) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new NotValidException("Comentário não encontrado. Id -> " + id, HttpStatus.NOT_FOUND));
+        Comment comment = commentRepository.getReferenceById(id);
 
         return new CommentShowDto(comment);
     }
 
     public CommentShowDto update(Long id, CommentUpdateDto dto) {
-        Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new NotValidException("Comentário não encontrado. Id -> " + id, HttpStatus.NOT_FOUND));
+        Comment comment = commentRepository.getReferenceById(id);
 
         comment.updateData(dto);
         commentRepository.save(comment);

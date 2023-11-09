@@ -6,6 +6,7 @@ import com.jornadamilhas.api.models.User;
 import com.jornadamilhas.api.repositories.UserRepository;
 import com.jornadamilhas.api.services.UserService;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
 
@@ -57,11 +61,13 @@ class UserControllerTest {
     @Autowired
     private JacksonTester<UserCreateDto> createDto;
 
+    @Autowired
+    private JacksonTester<UserShowDto> showDto;
+
 
     //CREATE
-
     @Test
-    @DisplayName("Deve retornar codigo 201, inputs válidos")
+    @DisplayName("Deve retornar codigo 201, inputs no corpo são válidos")
     void return201UserCreatedValidInputs() throws Exception {
 
         var dto = new UserCreateDto(
@@ -71,22 +77,36 @@ class UserControllerTest {
                 "123"
         );
 
-        String json = createDto.write(dto).getJson();
 
-        given(userService.create(dto)).willReturn(user);
+        var userShow = new User(
+                1L,
+                "lucas",
+                "lucas@email.com",
+                "http://asdwq.com",
+                "123",
+                "123",
+                null
+        );
+
+
+        String json = createDto.write(dto).getJson();
+        String expectedJson = showDto.write(new UserShowDto(userShow)).getJson();
+
+        given(userService.create(dto)).willReturn(userShow);
 
         var response = mvc.perform(
                 post("/users")
-                        .content(json)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .content(json)
         ).andReturn().getResponse();
 
 
-        Assertions.assertEquals(201, response.getStatus());
+        assertEquals(expectedJson, response.getContentAsString());
+        assertEquals(201, response.getStatus());
     }
 
     @Test
-    @DisplayName("Deve retornar codigo 400, inputs não válidos")
+    @DisplayName("Deve retornar codigo 400, inputs no corpo não válidos")
     void return400UserCreatedNotValidInputs() throws Exception {
 
         var dto = new UserCreateDto(
@@ -100,7 +120,7 @@ class UserControllerTest {
 
         given(userService.create(dto)).willReturn(user);
 
-        var response = mvc.perform(
+        MockHttpServletResponse response = mvc.perform(
                 post("/users")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -128,34 +148,44 @@ class UserControllerTest {
     @DisplayName("Deve retornar código 200 para solicitação de mostar um usuario especifico por id válido")
     void return200ShowUserByValidId() throws Exception {
 
-        given(userService.show(1l)).willReturn(user);
+        var userShow = new User(
+                1L,
+                "lucas",
+                "lucas@email.com",
+                "http://asdwq.com",
+                "123",
+                "123",
+                null
+        );
+        String expectedJson = showDto.write(new UserShowDto(userShow)).getJson();
+
+        given(userService.show(1L)).willReturn(userShow);
 
         var response = mvc.perform(get("/users/1"))
                 .andReturn().getResponse();
 
-        Assertions.assertEquals(200, response.getStatus());
+        assertEquals(expectedJson, response.getContentAsString());
+        assertEquals(200, response.getStatus());
     }
 
     @Test
-    @DisplayName("Deve retornar código 400 para solicitação de mostar um usuario especifico por id inválido")
-    void return400ShowUserByNotValidId() throws Exception {
+    @DisplayName("Deve retornar código 404 para solicitação de mostar um usuario especifico por id inválido")
+    void return404ShowUserByNotValidId() throws Exception {
 
-        given(userService.show(1l)).willThrow(NotValidException.class);
+        given(userService.show(1l)).willThrow(EntityNotFoundException.class);
 
         var response = mvc.perform(get("/users/1"))
                 .andReturn().getResponse();
 
-        Assertions.assertEquals(400, response.getStatus());
+        Assertions.assertEquals(404, response.getStatus());
     }
 
-    // SHOW
+    //DELETE
     @Test
     @DisplayName("Deve retornar código 204 para solicitação de deletar um usuario específico por id válido")
+    @WithMockUser
     void return200DeleteUserByValidId() throws Exception {
-
-        given(userService.show(1l)).willReturn(user);
-
-        var response = mvc.perform(delete("/users/1/delete"))
+        var response = mvc.perform(delete("/users/1"))
                 .andReturn().getResponse();
 
         Assertions.assertEquals(204, response.getStatus());
@@ -163,11 +193,12 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Deve retornar código 404 para solicitação de deletar um usuario específico por id não válido")
+    @WithMockUser
     void return404DeleteUserByNotValidId() throws Exception {
 
-       doThrow(NotValidException.class).when(userService).delete(1l);
+        doThrow(EntityNotFoundException.class).when(userService).delete(1L);
 
-        var response = mvc.perform(delete("/users/1/delete"))
+        var response = mvc.perform(delete("/users/1"))
                 .andReturn().getResponse();
 
         Assertions.assertEquals(404, response.getStatus());
