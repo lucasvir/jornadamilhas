@@ -2,19 +2,18 @@ package com.jornadamilhas.api.models;
 
 import com.jornadamilhas.api.dto.destiny.DestinyCreateDto;
 import com.jornadamilhas.api.dto.destiny.DestinyUpdateDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Destiny {
+@Table(name = "destinos")
+public class Destiny implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
