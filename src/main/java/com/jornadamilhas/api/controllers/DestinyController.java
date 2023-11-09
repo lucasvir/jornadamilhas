@@ -6,6 +6,7 @@ import com.jornadamilhas.api.dto.destiny.DestinyUpdateDto;
 import com.jornadamilhas.api.models.Destiny;
 import com.jornadamilhas.api.services.DestinyService;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -49,12 +50,14 @@ public class DestinyController {
     }
 
     @PutMapping("{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<DestinyShowDto> update(@PathVariable Long id, @RequestBody DestinyUpdateDto dto) {
         DestinyShowDto destiny = service.update(id, dto);
         return ResponseEntity.ok(destiny);
     }
 
     @DeleteMapping("{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

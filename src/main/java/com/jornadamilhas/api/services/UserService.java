@@ -6,7 +6,9 @@ import com.jornadamilhas.api.models.User;
 import com.jornadamilhas.api.repositories.UserRepository;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
 import com.jornadamilhas.api.validations.CreateUserValidations;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,8 +26,11 @@ public class UserService {
     public User create(UserCreateDto dto) {
         validations.forEach(v -> v.validate(dto));
 
-        return userRepository.save(new User(dto));
+        String hashedPass = hashPass(dto.password());
+
+        return userRepository.save(new User(dto, hashedPass));
     }
+
 
     public List<UserShowDto> index() {
         List<User> users = userRepository.findAll();
@@ -40,14 +45,17 @@ public class UserService {
     }
 
     public User show(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new NotValidException("Usuário não encontrado. Id -> " + id));
+        return userRepository.getReferenceById(id);
     }
 
     public void delete(Long id) {
-        userRepository.findById(id)
-                .orElseThrow(() -> new NotValidException("Usuário não encontrado. Id -> " + id)); //cheking id exists
+        userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         userRepository.deleteById(id);
+    }
+
+    private String hashPass(String password) {
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        return bcrypt.encode(password);
     }
 }

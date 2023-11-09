@@ -33,7 +33,7 @@ public class ErrorHandler {
 
     @ExceptionHandler(NotValidException.class)
     private ResponseEntity<String> handleMyException(NotValidException e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
+        return ResponseEntity.status(e.getStatusCode()).body(e.getMessage());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

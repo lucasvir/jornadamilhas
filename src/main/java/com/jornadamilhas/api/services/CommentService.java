@@ -10,6 +10,7 @@ import com.jornadamilhas.api.repositories.UserRepository;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -28,7 +29,7 @@ public class CommentService {
 
     public CommentShowDto create(Long id, CommentCreateDto dto) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotValidException("Usuário não encontrado. Id -> " + id));
+                .orElseThrow(() -> new NotValidException("Usuário não encontrado. Id -> " + id, HttpStatus.NOT_FOUND));
 
         Comment comment = new Comment(dto, user);
         commentRepository.save(comment);
@@ -50,14 +51,14 @@ public class CommentService {
 
     public CommentShowDto show(Long id) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new NotValidException("Comentário não encontrado. Id -> " + id));
+                .orElseThrow(() -> new NotValidException("Comentário não encontrado. Id -> " + id, HttpStatus.NOT_FOUND));
 
         return new CommentShowDto(comment);
     }
 
     public CommentShowDto update(Long id, CommentUpdateDto dto) {
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new NotValidException("Comentário não encontrado. Id -> " + id));
+                .orElseThrow(() -> new NotValidException("Comentário não encontrado. Id -> " + id, HttpStatus.NOT_FOUND));
 
         comment.updateData(dto);
         commentRepository.save(comment);
@@ -73,13 +74,19 @@ public class CommentService {
 
     public List<CommentShowDto> radomComments() {
         List<Comment> comments = commentRepository.findAll();
+
+
         List<CommentShowDto> dtoList = new ArrayList<>();
 
         int maxCount = 3;
         int i = 0;
         var random = new Random();
 
+        System.out.println(comments.size());
         while (i < maxCount) {
+            if (comments.size() <= 3) {
+                throw new NotValidException("Não há depoimentos suficiente", HttpStatus.BAD_REQUEST);
+            }
             int randomNum = random.nextInt(comments.size() - 1) + 1;
             Comment comment = comments.get(randomNum);
             CommentShowDto dtoComment = new CommentShowDto(comment);

@@ -5,6 +5,7 @@ import com.jornadamilhas.api.dto.user.UserShowDto;
 import com.jornadamilhas.api.models.User;
 import com.jornadamilhas.api.services.UserService;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -28,16 +29,10 @@ public class UserController {
     @PostMapping
     @Transactional
     public ResponseEntity<UserShowDto> create(@RequestBody @Valid UserCreateDto dto) {
+        User user = service.create(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(user.getId()).toUri();
 
-        try {
-            User user = service.create(dto);
-            URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}").buildAndExpand(user.getId()).toUri();
-
-            return ResponseEntity.created(uri).body(new UserShowDto(user));
-        } catch (NotValidException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.created(uri).body(new UserShowDto(user));
     }
 
     @GetMapping
@@ -48,24 +43,15 @@ public class UserController {
 
     @GetMapping("{id}")
     public ResponseEntity<UserShowDto> show(@PathVariable Long id) {
-        try {
-            User user = service.show(id);
-            return ResponseEntity.ok(new UserShowDto(user));
-        } catch (NotValidException e) {
-            System.out.println("Usuário não encontrado. Id -> " + id);
-            return ResponseEntity.badRequest().build();
-        }
+        User user = service.show(id);
+        return ResponseEntity.ok(new UserShowDto(user));
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearer-key")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        try {
-            service.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (NotValidException e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

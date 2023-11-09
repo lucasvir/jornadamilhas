@@ -9,6 +9,7 @@ import com.jornadamilhas.api.repositories.DestinyRepository;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class DestinyService {
 
         boolean destinyExists = repository.existsByNameIgnoreCase(dto.name());
         if (destinyExists) {
-            throw new NotValidException("Destino já cadastrado com esse nome. Nome -> " + dto.name());
+            throw new NotValidException("Destino já cadastrado com esse nome. Nome -> " + dto.name(), HttpStatus.BAD_REQUEST);
         }
 
         Destiny destiny = new Destiny(dto);
@@ -63,11 +64,7 @@ public class DestinyService {
     }
 
     public void delete(Long id) {
-        try {
-            show(id);
-        } catch (NotValidException e) {
-            throw new NotValidException(e.getMessage());
-        }
+        show(id); //id validation
 
         repository.deleteById(id);
     }
@@ -77,12 +74,12 @@ public class DestinyService {
 
         boolean existsByName = repository.existsByNameIgnoreCase(dto.name());
         if (existsByName) {
-            throw new NotValidException("Destino já registrado com esse nome. Nome -> " + dto.name());
+            throw new NotValidException("Destino já registrado com esse nome. Nome -> " + dto.name(), HttpStatus.BAD_REQUEST);
         }
 
         var dtoIsEmpty = dto.name() == null && dto.imgs() == null && dto.price() == null && dto.meta() == null;
         if (dtoIsEmpty) {
-            throw new NotValidException("Nenhum campo foi preenchido para fazer a atualização.");
+            throw new NotValidException("Nenhum campo foi preenchido para fazer a atualização.", HttpStatus.BAD_REQUEST);
         }
 
         destiny.updateData(dto);
@@ -95,7 +92,7 @@ public class DestinyService {
         if (!nome.equalsIgnoreCase("")) {
             List<Destiny> detinations = repository.findByNameContainsIgnoreCase(nome);
             if (detinations.isEmpty()) {
-                throw new NotValidException("Nenhum destino foi encontrado.");
+                throw new NotValidException("Nenhum destino foi encontrado.", HttpStatus.NOT_FOUND);
             }
 
             List<DestinyShowDto> destinyShowDtos = new ArrayList<>();
@@ -105,7 +102,7 @@ public class DestinyService {
             return destinyShowDtos;
 
         } else {
-            throw new NotValidException("Nome para busca não foi informado.");
+            throw new NotValidException("Nome para busca não foi informado.", HttpStatus.BAD_REQUEST);
         }
     }
 }

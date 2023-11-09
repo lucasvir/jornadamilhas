@@ -6,6 +6,7 @@ import com.jornadamilhas.api.repositories.UserRepository;
 import com.jornadamilhas.api.services.exceptions.NotValidException;
 import org.hibernate.query.QueryTypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class UserEmailAlreadyRegisteredValidation implements CreateUserValidatio
 
         boolean userExistByEmail = userRepository.existsByEmail(dto.email());
         if (userExistByEmail) {
-            throw new NotValidException("Email já registrado para outro usuário");
+            throw new NotValidException("Email já registrado para outro usuário", HttpStatus.BAD_REQUEST);
         }
     }
 }

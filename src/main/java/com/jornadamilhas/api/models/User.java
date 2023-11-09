@@ -42,12 +42,12 @@ public class User implements UserDetails {
         this.comments = comments;
     }
 
-    public User(UserCreateDto dto) {
+    public User(UserCreateDto dto, String passHashed) {
         this.name = dto.name();
         this.email = dto.email();
         this.imgUrl = dto.imgUrl();
-        this.password = dto.password();
-        this.old_password = dto.password();
+        this.password = passHashed;
+        this.old_password = passHashed;
     }
 
     public Long getId() {

@@ -33,6 +33,7 @@ public class TokenService {
         }
     }
 
+    //TOKEN VALIDATION
     public String getSubject(String tokenJWT) {
         try {
             var algorithm = Algorithm.HMAC256(secret);

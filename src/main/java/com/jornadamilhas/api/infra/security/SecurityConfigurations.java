@@ -26,6 +26,16 @@ public class SecurityConfigurations {
         return http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
+                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/depoimentos").authenticated();
+                    req.requestMatchers(HttpMethod.POST, "/destinos").authenticated();
+                    req.requestMatchers(HttpMethod.PUT, "/destinos/{id}").authenticated();
+                    req.requestMatchers(HttpMethod.PUT, "/users/{id}").authenticated();
+                    req.requestMatchers(HttpMethod.PUT, "/depoimentos/{id}").authenticated();
+                    req.requestMatchers(HttpMethod.DELETE, "/users/{id}").authenticated();
+                    req.requestMatchers(HttpMethod.DELETE, "/depoimentos/{id}").authenticated();
+                    req.requestMatchers(HttpMethod.DELETE, "/destinos/{id}").authenticated();
+                    req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.anyRequest().permitAll();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
