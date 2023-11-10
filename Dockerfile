@@ -13,4 +13,4 @@ EXPOSE 8080
 
 COPY --from=build /target/api-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT [ "java", "-Dspring.profiles.active=prod", "-jar", "app.jar" ]
+ENTRYPOINT [ "java", "-Dspring.profiles.active=prod,test", "-jar", "app.jar" ]
