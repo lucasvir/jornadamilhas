@@ -27,9 +27,11 @@ Conta com gerenciamento e ciração de úsuarios, autenticação via JWT Token, 
 - Maven
 
 ## :construction: EXEC
+<!---
 
 ```bash
-# clonando repositório
+
+ # clonando repositório
 git clone https://github.com/lucasvir/jornadamilhas.git
 
 #acessar diretório
@@ -45,6 +47,7 @@ cd jornadamilhas
 #exemplo:
 java -Dspring.profiles.active=prod -DJWT_SECRET=senhaparaapitoken -DDATASOURCE_URL=jdbc:mysql://endereco.do.db/nomedodb -DDATASOURCE_USERNAME=nomedousuario -DDATASOURCE_PASSWORD=senhadousuario -jar target/api-0.0.1-SNAPSHOT.jar
 ```
+--->
 
 
 <center> Lucas do Amaral Virmond - https://www.linkedin.com/in/lucasavirmond/ </center> 
