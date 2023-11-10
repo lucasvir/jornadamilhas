@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @SpringBootTest
 @AutoConfigureJsonTesters
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
 class UserControllerTest {
 
     @Autowired
