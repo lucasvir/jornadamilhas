@@ -40,9 +40,10 @@ cd jornadamilhas
 #DATASOURCE_URL: endereço do banco de dados
 #DATASOURCE_USERNAME: nome do usuário do banco de dados
 #DATASOURCE_PASSWORD: senha de acesso ao banco de dados
+#JWT_SECRET: senha para api de geração dos token
 
 #exemplo:
-java -Dspring.profiles.active=prod -DDATASOURCE_URL=jdbc:mysql://endereco.do.db/nomedodb -DDATASOURCE_USERNAME=nomedousuario -DDATASOURCE_PASSWORD=senhadousuario -jar target/api-0.0.1-SNAPSHOT.jar
+java -Dspring.profiles.active=prod -DJWT_SECRET=senhaparaapitoken -DDATASOURCE_URL=jdbc:mysql://endereco.do.db/nomedodb -DDATASOURCE_USERNAME=nomedousuario -DDATASOURCE_PASSWORD=senhadousuario -jar target/api-0.0.1-SNAPSHOT.jar
 ```
 
 
