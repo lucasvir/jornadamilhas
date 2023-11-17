@@ -27,27 +27,29 @@ Conta com gerenciamento e ciração de úsuarios, autenticação via JWT Token, 
 - Maven
 
 ## :construction: EXEC
-<!---
+
 
 ```bash
 
  # clonando repositório
 git clone https://github.com/lucasvir/jornadamilhas.git
 
+```
+
+```bash
 #acessar diretório
 cd jornadamilhas
+```
 
+```bash
 #inicializar aplicação setando as variáveis de ambiente
-#o comando -Dspring.profiles.active=prod serve para ativar o perfil de produção, abilitando as variáveis de ambiente.
 #DATASOURCE_URL: endereço do banco de dados
 #DATASOURCE_USERNAME: nome do usuário do banco de dados
 #DATASOURCE_PASSWORD: senha de acesso ao banco de dados
-#JWT_SECRET: senha para api de geração dos token
+#JWT_SECRET: secret para api de geração dos token
 
 #exemplo:
-java -Dspring.profiles.active=prod -DJWT_SECRET=senhaparaapitoken -DDATASOURCE_URL=jdbc:mysql://endereco.do.db/nomedodb -DDATASOURCE_USERNAME=nomedousuario -DDATASOURCE_PASSWORD=senhadousuario -jar target/api-0.0.1-SNAPSHOT.jar
+java -DJWT_SECRET=senhaparaapitoken -DDATASOURCE_URL=jdbc:mysql://endereco.do.db/nomedodb -DDATASOURCE_USERNAME=nomedousuario -DDATASOURCE_PASSWORD=senhadousuario -jar target/api-0.0.1-SNAPSHOT.jar
 ```
---->
-
 
 <center> Lucas do Amaral Virmond - https://www.linkedin.com/in/lucasavirmond/ </center> 
