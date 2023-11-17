@@ -23,7 +23,7 @@ Conta com gerenciamento e ciração de úsuarios, autenticação via JWT Token, 
 - Spring Boot
 - JPA / Hibernate
 - Flyway
-- MySQL
+- Postgres
 - JUnit
 - Mockito
 - Maven
