@@ -1,6 +1,8 @@
 # Jornada Milhas API
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/lucasvir/jornadamilhas/blob/main/LICENSE)
 
+✔️ https://lucasvir.github.io/jornadamilhas/
+
 # :scroll: Descrição
 
 API Rest criada em Java 17 para uma aplicação web de viagens. Proposta elaborada pelo Challenge Back-End 7 da plataforma Alura.
