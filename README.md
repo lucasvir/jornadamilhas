@@ -7,7 +7,7 @@
 
 API Rest criada em Java 17 para uma aplicação web de viagens. Proposta elaborada pelo Challenge Back-End 7 da plataforma Alura.
 
-Conta com gerenciamento e ciração de úsuarios, autenticação via JWT Token, sistema de criação de destinos, criação e randomização de comentários.
+Conta com gerenciamento e ciração de úsuarios, autenticação via JWT Token, sistema de criação de destinos com gerador de descrição via API do chatgpt, criação e randomização de comentários.
 
 ## :wrench: Funcionalidades
 
