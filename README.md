@@ -30,28 +30,42 @@ Conta com gerenciamento e ciração de úsuarios, autenticação via JWT Token, 
 
 ## :construction: EXEC
 
+> Pré-requisitos:
+> - instalar o Java ([Oracle](https://www.oracle.com/java/technologies/downloads/)).
+> - instalar banco de dados Postgres ([Postgres](https://www.postgresql.org/download/)).
+> - instalar o Maven (build) ([Maven](https://maven.apache.org/install.html)).
 
+<br />
+
+Clonar repositório
 ```bash
-
- # clonando repositório
 git clone https://github.com/lucasvir/jornadamilhas.git
-
 ```
 
+Acessar diretório
 ```bash
-#acessar diretório
 cd jornadamilhas
 ```
 
+Criar banco de dados para testes
 ```bash
-#inicializar aplicação setando as variáveis de ambiente
-#DATASOURCE_URL: endereço do banco de dados
-#DATASOURCE_USERNAME: nome do usuário do banco de dados
-#DATASOURCE_PASSWORD: senha de acesso ao banco de dados
-#JWT_SECRET: secret para api de geração dos token
-
-#exemplo:
-java -DJWT_SECRET=senhaparaapitoken -DDATASOURCE_URL=jdbc:mysql://endereco.do.db/nomedodb -DDATASOURCE_USERNAME=nomedousuario -DDATASOURCE_PASSWORD=senhadousuario -jar target/api-0.0.1-SNAPSHOT.jar
+sudo -u postgres psql
+CREATE DATABASE test_db;
+ALTER DATABASE test_db OWNER TO <nomeusuario>;
 ```
 
-<center> Lucas do Amaral Virmond - https://www.linkedin.com/in/lucasavirmond/ </center> 
+Fazer o build
+```bash
+mvn verify
+```
+
+Inicializar aplicação setando as variáveis de ambiente
+> DATASOURCE_URL: endereço do banco de dados <br />
+> DATASOURCE_USERNAME: nome do usuário do banco de dados <br />
+> DATASOURCE_PASSWORD: senha de acesso ao banco de dados <br />
+> JWT_SECRET: secret para api de geração dos token <br />
+
+*exemplo:*
+```bash
+java -DJWT_SECRET=$2a$12$5H0JqHT2eZJdIauXvxIMOuNjeCHKHRMDQLFztQAeGQs5eAGCANzje -DDATASOURCE_URL=jdbc:postgresql://localhost:5432/milhas_test -DDATASOURCE_USERNAME=root -DDATASOURCE_PASSWORD=root -jar target/api-0.0.1-SNAPSHOT.jar
+```
