@@ -69,5 +69,5 @@ Inicializar aplicação setando as variáveis de ambiente
 
 *exemplo:*
 ```bash
-java -DJWT_SECRET=$2a$12$5H0JqHT2eZJdIauXvxIMOuNjeCHKHRMDQLFztQAeGQs5eAGCANzje -DDATASOURCE_URL=jdbc:postgresql://localhost:5432/milhas_test -DDATASOURCE_USERNAME=root -DDATASOURCE_PASSWORD=root -jar target/api-0.0.1-SNAPSHOT.jar
+java -DJWT_SECRET=$2a$12$5H0JqHT2eZJdIauXvxIMOuNjeCHKHRMDQLFztQAeGQs5eAGCANzje -DDATASOURCE_URL=jdbc:postgresql://localhost:5432/<nomedb> -DDATASOURCE_USERNAME=<nomeusuario> -DDATASOURCE_PASSWORD=<senhausuario> -jar target/api-0.0.1-SNAPSHOT.jar
 ```
