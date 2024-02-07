@@ -50,10 +50,8 @@ cd jornadamilhas
 Criar banco de dados para persistência e para testes
 ```bash
 sudo -u postgres psql
-CREATE DATABASE <nomedb>;
-CREATE DATABASE test_db;
-ALTER DATABASE <nomedb> OWNER TO <nomeusuario>
-ALTER DATABASE test_db OWNER TO <nomeusuario>;
+CREATE DATABASE <nomedb> OWNER <nomeusuario>;
+CREATE DATABASE test_db OWNER <nomeusuario>;
 ```
 
 Fazer o build
